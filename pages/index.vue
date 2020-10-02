@@ -1,34 +1,38 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
       <h1 class="title">
         404.games
       </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+      <div class="videos">
+        <Video
+          v-for="(video, index) in videos"
+          :key="index"
+          :video="video"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import Video from '~/components/Video'
+
+export default {
+  components: {
+    Video
+  },
+
+  async asyncData ({ $content, app }) {
+    const videos = await $content('videos')
+      .sortBy('published_at', 'desc')
+      .fetch()
+
+    return {
+      videos
+    }
+  }
+}
 </script>
 
 <style>
